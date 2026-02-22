@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 100
+
+struct Node {
+    int vertex;
+    struct Node* next;
+};
+
+struct Node* adjList[MAX];
+
+struct Node* createNode(int v) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->vertex = v;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void addEdge(int u, int v) {
+    struct Node* newNode = createNode(v);
+    newNode->next = adjList[u];
+    adjList[u] = newNode;
+
+    newNode = createNode(u);
+    newNode->next = adjList[v];
+    adjList[v] = newNode;
+}
+
+void displayGraph(int vertices) {
+    int i;
+    for(i = 0; i < vertices; i++) {
+        struct Node* temp = adjList[i];
+        printf("%d -> ", i);
+        while(temp != NULL) {
+            printf("%d -> ", temp->vertex);
+            temp = temp->next;
+        }
+        printf("NULL\n");
+    }
+}
+
+int main() {
+    int vertices = 4;
+    int edges = 4;
+
+    // Initialize list
+    for(int i = 0; i < MAX; i++)
+        adjList[i] = NULL;
+
+    // Manually adding edges (so no input issue)
+    addEdge(0,1);
+    addEdge(0,2);
+    addEdge(1,2);
+    addEdge(2,3);
+
+    printf("Graph Representation:\n");
+    displayGraph(vertices);
+
+    return 0;
+}
+
